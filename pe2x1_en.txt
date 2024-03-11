@@ -1,0 +1,58 @@
+//Design Code
+module pe2x1(output reg out,valid,input [1:0]in,input en);
+  always@*
+    begin
+      if(en==1'b0)
+        begin
+          out=1'b0;
+          valid=1'b0;
+        end
+      else
+        begin
+          if(in==2'b00)
+            begin
+              out=1'b0;
+              valid=1'b0;
+            end
+          else if(in==2'b01)
+            begin
+              out=1'b0;
+              valid=1'b1;
+            end
+          else if(in[1]==1'b1)
+            begin
+              out=1'b1;
+              valid=1'b1;
+            end
+        end
+    end
+endmodule
+
+//Test Bench Code
+module test();
+  wire out,valid;
+  reg[1:0]in;
+  reg en;
+  integer i;
+  pe2x1 dut(out,valid,in,en);
+  initial
+    begin
+      for(i=0;i<2;i=i+1)
+        begin
+          en=i;
+          begin
+            integer j;
+            for(j=0;j<4;j=j+1)
+              begin
+                in=j;
+                #10;
+              end
+          end
+          #10;
+        end
+    end
+  initial
+    begin
+      $monitor("out=%b,valid=%b,in=%b,en=%b",out,valid,in,en);
+    end
+endmodule
